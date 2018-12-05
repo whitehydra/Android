@@ -23,10 +23,19 @@ public class CategoryListActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         ListView lvMain = (ListView) findViewById(R.id.category_list);
 
-        String[] category_name = getResources().getStringArray(R.array.category_name_array);
+
+        String noteType = getIntent().getStringExtra("NoteType");
+        String[] category_name = null;
+
+
+        if(noteType.equals("Consumption")){
+            category_name = getResources().getStringArray(R.array.category_consumption_array);
+        }
+        if(noteType.equals("Income")){
+            category_name = getResources().getStringArray(R.array.category_income_array);
+        }
 
 
         CategorySimpleAdapter adapter = new CategorySimpleAdapter(this, category_name);

@@ -4,13 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -23,15 +33,26 @@ public class CreateNoteActivity extends AppCompatActivity {
     String[] monthName = {"Янв", "Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"};
 
     String noteType;
-    TextView actualCategory;
-    int listAnswer = 0;
+    int categoryAnswer = 0, valueAnswer = 1;
+
+
+    Toolbar toolbar;
+    LinearLayout dateBlock, timeBlock, categoryBlock, valueBlock;
+    EditText inputSum, inputComment;
+    TextView dateText, timeText, categoryText, valueText;
+    String Tag = "CreateNote ";
+
+    Calendar selectedTime = Calendar.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_createnote);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        View content = drawContent();
+        setContentView(content);
+
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -39,94 +60,103 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         Date currentTime = Calendar.getInstance().getTime();
 
-        TextView date = findViewById(R.id.date_text);
-        TextView time = findViewById(R.id.time_text);
-        actualCategory = findViewById(R.id.actualCategory);
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat datef = new SimpleDateFormat("dd MMM yyyy");
+        @SuppressLint("SimpleDateFormat") final SimpleDateFormat datef = new SimpleDateFormat("dd MMM yyyy");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat timef = new SimpleDateFormat("HH:mm");
 
-        date.setText(datef.format(currentTime));
-        time.setText(timef.format(currentTime));
-
+        selectedTime.setTime(currentTime);
+        dateText.setText(datef.format(currentTime));
+        timeText.setText(timef.format(currentTime));
 
         noteType = getIntent().getStringExtra("NoteType");
 
-        Log.d("MY LOGS: ", noteType);
+        Log.d(Tag, "noteType - " + noteType);
         if(noteType.equals("Consumption")){
             getSupportActionBar().setTitle("Расход");
-            actualCategory.setText("Разное");
+            categoryText.setText("Разное");
 
         }
         if(noteType.equals("Income")){
             getSupportActionBar().setTitle("Доход");
-            actualCategory.setText("Премия");
-
+            categoryText.setText("Премия");
         }
 
 
-
-        View date_button = findViewById(R.id.date_button);
-        View time_button = findViewById(R.id.time_button);
-
         View.OnClickListener oclkBut = new View.OnClickListener() {
             @Override
-            public void onClick(View v) { ;
-                switch (v.getId()) {
-                    case R.id.date_button:
+            public void onClick(View v) {
+                if (v == dateBlock){
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-                        Calendar calendar = Calendar.getInstance();
-                        int year = calendar.get(Calendar.YEAR);
-                        int month = calendar.get(Calendar.MONTH);
-                        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(CreateNoteActivity.this,
+                            new DatePickerDialog.OnDateSetListener() {
+                                @SuppressLint("SetTextI18n")
+                                @Override
+                                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                    dateText.setText(day + " " + monthName[month] + " " + year);
+                                   // LocalDate time = LocalDate.of(year,month,day);
+                                    selectedTime.set(Calendar.YEAR, year);
+                                    selectedTime.set(Calendar.MONTH, month);
+                                    selectedTime.set(Calendar.DAY_OF_MONTH, day);
+                                }
+                            }, year, month, dayOfMonth);
+                    datePickerDialog.show();
+                }
 
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(CreateNoteActivity.this,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @SuppressLint("SetTextI18n")
-                                    @Override
-                                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                        TextView date = findViewById(R.id.date_text);
-                                        date.setText(day + " " + monthName[month] + " " + year);
-
-                                    }
-                                }, year, month, dayOfMonth);
-                        datePickerDialog.show();
-                        break;
-                    case R.id.time_button:
-                        calendar = Calendar.getInstance();
-                        int hour = calendar.get(Calendar.HOUR);
-                        int minute = calendar.get(Calendar.MINUTE);
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(CreateNoteActivity.this,
-                                new TimePickerDialog.OnTimeSetListener() {
-                                    @SuppressLint("SetTextI18n")
-                                    @Override
-                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                        TextView time = findViewById(R.id.time_text);
-                                        time.setText(hourOfDay + ":" + String.format("%2s",minute).replace(' ', '0'));
-                                    }
-                                }, hour, minute, true);
-                        timePickerDialog.show();
-                        break;
+                if (v == timeBlock){
+                    Calendar calendar = Calendar.getInstance();
+                    final int hour = calendar.get(Calendar.HOUR);
+                    int minute = calendar.get(Calendar.MINUTE);
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(CreateNoteActivity.this,
+                            new TimePickerDialog.OnTimeSetListener() {
+                                @SuppressLint("SetTextI18n")
+                                @Override
+                                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                    timeText.setText(hourOfDay + ":" + String.format("%2s",minute).
+                                            replace(' ', '0'));
+                                    selectedTime.set(Calendar.HOUR, hourOfDay);
+                                    selectedTime.set(Calendar.MINUTE, minute);
+                                }
+                            }, hour, minute, true);
+                    timePickerDialog.show();
+                }
+                if (v == categoryBlock){
+                    Intent intent = new Intent(CreateNoteActivity.this, CategoryListActivity.class);
+                    intent.putExtra("NoteType",noteType);
+                    startActivityForResult(intent, categoryAnswer);
+                }
+                if (v == valueBlock){
+                    Intent intent = new Intent(CreateNoteActivity.this, ValueListActivity.class);
+                    startActivityForResult(intent, valueAnswer);
                 }
             }
         };
-        date_button.setOnClickListener(oclkBut);
-        time_button.setOnClickListener(oclkBut);
+        dateBlock.setOnClickListener(oclkBut);
+        timeBlock.setOnClickListener(oclkBut);
+        categoryBlock.setOnClickListener(oclkBut);
+        valueBlock.setOnClickListener(oclkBut);
 
+        Toolbar.OnMenuItemClickListener toolbarListener = new Toolbar.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case (R.id.save):
+                        Log.d(Tag, "Add note");
+                        int sum;
+                        if(inputSum.getText().toString().equals(""))sum=0;
+                        else sum = Integer.parseInt(inputSum.getText().toString());
+                        Note note = new Note(categoryText.getText().toString(), valueText.getText().toString(),
+                                inputComment.getText().toString(), noteType, sum, selectedTime);
+                        Log.d(Tag, note.getFullInfo());
+                }
+                return false;
+            }
+        };
+        toolbar.setOnMenuItemClickListener(toolbarListener);
     }
 
-
-
-    public void openValueList(View view){
-        Intent intent = new Intent(CreateNoteActivity.this, ValueListActivity.class);
-        startActivity(intent);
-    }
-
-    public void openCategoryList(View view){
-        Intent intent = new Intent(CreateNoteActivity.this, CategoryListActivity.class);
-        startActivityForResult(intent,listAnswer);
-        //startActivity(intent);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,28 +168,252 @@ public class CreateNoteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == listAnswer){
+        if (requestCode == categoryAnswer){
             if(resultCode == RESULT_OK){
                 int listNum = data.getIntExtra("RESULT",0);
-                String category = (getResources().getStringArray(R.array.category_name_array))[listNum];
-                Log.d("MY LOGS:", category);
-                actualCategory.setText(category);
+                String category = null;
+                if (noteType.equals("Consumption")) category = (getResources().
+                        getStringArray(R.array.category_consumption_array))[listNum];
+                if (noteType.equals("Income")) category = (getResources().
+                        getStringArray(R.array.category_income_array))[listNum];
+                Log.d(Tag, "returned - " + category);
+                categoryText.setText(category);
+            }
+        }
+        if (requestCode == valueAnswer){
+            if(resultCode == RESULT_OK){
+                int listNum = data.getIntExtra("RESULT",0);
+                String value = (getResources().getStringArray(R.array.value_name_array))[listNum];
+                Log.d(Tag, "returned - " + value);
+                valueText.setText(value);
             }
         }
     }
-
-
-
-
-
-
-
 
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private LinearLayout drawContent(){
+        int matchParent = LinearLayout.LayoutParams.MATCH_PARENT;
+        int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        //*********ЭЛЕМЕНТЫ ИНТЕРФЕЙСА
+        LinearLayout mainLi = new LinearLayout(this);
+        mainLi.setOrientation(LinearLayout.VERTICAL);
+        mainLi.setBackgroundColor(getResources().getColor(R.color.mainLayout_background));
+       // mainLi.setLayoutParams(new LinearLayout.LayoutParams(wrapContent,wrapContent, 1f));
+
+        //**Тулбар
+        toolbar = new Toolbar(this);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.title_color));
+        mainLi.addView(toolbar, new LinearLayout.LayoutParams(matchParent, toPixels(56)));
+
+        LinearLayout mainBlock = new LinearLayout(this);
+        mainBlock.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams mainBlockParams = new LinearLayout.LayoutParams(matchParent,wrapContent);
+        mainBlockParams.leftMargin = toPixels(10);
+        mainBlockParams.rightMargin = toPixels(10);
+        mainBlockParams.topMargin = toPixels(20);
+        mainBlock.setElevation(toPixels(3));
+        mainBlock.setBackground(getResources().getDrawable(R.drawable.layout_blocks));
+
+        LinearLayout noteBlock_1 = new LinearLayout(this);
+        noteBlock_1.setOrientation(LinearLayout.HORIZONTAL);
+
+        //**Блок первый (Дата)
+        dateBlock = new LinearLayout(this);
+        dateBlock.setOrientation(LinearLayout.VERTICAL);
+        dateBlock.setPadding(toPixels(10),toPixels(10),toPixels(10),toPixels(10));
+
+        TextView textDay = new TextView(this);
+        textDay.setTextSize(12);
+        textDay.setTextColor(getResources().getColor(R.color.grey_light));
+        textDay.setText(R.string.day);
+        dateBlock.addView(textDay, matchParent, wrapContent);
+
+        LinearLayout blockInBlock_1 = new LinearLayout(this);
+        blockInBlock_1.setOrientation(LinearLayout.HORIZONTAL);
+
+        dateText = new TextView(this);
+        dateText.setTextSize(18);
+        dateText.setTypeface(Typeface.DEFAULT_BOLD);
+        dateText.setPadding(0, toPixels(5),0,0);
+        dateText.setTextColor(getResources().getColor(R.color.blue));
+        dateText.setText(R.string.default_date);
+        blockInBlock_1.addView(dateText);
+
+        ImageView imageOpen_1 = new ImageView(this);
+        imageOpen_1.setBackgroundResource(R.drawable.ic_open);
+        blockInBlock_1.addView(imageOpen_1, matchParent, matchParent);
+
+        dateBlock.addView(blockInBlock_1, matchParent, matchParent);
+
+        noteBlock_1.addView(dateBlock, wrapContent, matchParent);
+
+        //**Блок второй (Время)
+        timeBlock = new LinearLayout(this);
+        timeBlock.setOrientation(LinearLayout.VERTICAL);
+        timeBlock.setPadding(toPixels(10),toPixels(10),toPixels(10),toPixels(10));
+
+        TextView textTime = new TextView(this);
+        textTime.setTextSize(12);
+        textTime.setTextColor(getResources().getColor(R.color.grey_light));
+        textTime.setText(R.string.time);
+
+        timeBlock.addView(textTime, matchParent, wrapContent);
+
+        LinearLayout blockInBlock_2 = new LinearLayout(this);
+        blockInBlock_2.setOrientation(LinearLayout.HORIZONTAL);
+
+        timeText = new TextView(this);
+        timeText.setTextSize(18);
+        timeText.setTypeface(Typeface.DEFAULT_BOLD);
+        timeText.setPadding(0, toPixels(5),0,0);
+        timeText.setTextColor(getResources().getColor(R.color.blue));
+        timeText.setText(R.string.default_time);
+        blockInBlock_2.addView(timeText);
+
+        Space space2 = new Space(this);
+        blockInBlock_2.addView(space2, toPixels(35), wrapContent);
+
+        ImageView imageOpen_2 = new ImageView(this);
+        imageOpen_2.setBackgroundResource(R.drawable.ic_open);
+
+        blockInBlock_2.addView(imageOpen_2, wrapContent, matchParent);
+        timeBlock.addView(blockInBlock_2,matchParent,matchParent);
+        noteBlock_1.addView(timeBlock,wrapContent,matchParent);
+        mainBlock.addView(noteBlock_1,matchParent,matchParent);
+
+        View line1 = new View(this);
+        line1.setBackgroundColor(getResources().getColor(R.color.black_light));
+        mainBlock.addView(line1,matchParent,toPixels(1));
+
+        //**Блок третий (Категория)
+        categoryBlock = new LinearLayout(this);
+        categoryBlock.setOrientation(LinearLayout.VERTICAL);
+        categoryBlock.setPadding(toPixels(10),toPixels(10),toPixels(10),toPixels(10));
+
+        TextView textCategory = new TextView(this);
+        textCategory.setTextSize(12);
+        textCategory.setTextColor(getResources().getColor(R.color.grey_light));
+        textCategory.setText(R.string.category);
+        categoryBlock.addView(textCategory, matchParent, wrapContent);
+
+        LinearLayout blockInBlock_3 = new LinearLayout(this);
+
+        categoryText = new TextView(this);
+        categoryText.setTextSize(18);
+        categoryText.setTypeface(Typeface.DEFAULT_BOLD);
+        categoryText.setPadding(0, toPixels(5),0,0);
+        categoryText.setText(R.string.category_different);
+        categoryText.setLayoutParams(new LinearLayout.LayoutParams(wrapContent,wrapContent, 1f));
+
+        blockInBlock_3.addView(categoryText);
+
+        ImageView imageOpen_3 = new ImageView(this);
+        imageOpen_3.setBackgroundResource(R.drawable.ic_open);
+
+        blockInBlock_3.addView(imageOpen_3, wrapContent, matchParent);
+        categoryBlock.addView(blockInBlock_3, matchParent, matchParent);
+        mainBlock.addView(categoryBlock,matchParent,matchParent);
+
+        View line2 = new View(this);
+        line2.setBackgroundColor(getResources().getColor(R.color.black_light));
+        mainBlock.addView(line2,matchParent,toPixels(1));
+
+        //**Блок четвёртый (Сумма)
+        LinearLayout noteBlock_2 = new LinearLayout(this);
+        noteBlock_2.setOrientation(LinearLayout.VERTICAL);
+        noteBlock_2.setPadding(toPixels(10),toPixels(10),toPixels(10),toPixels(10));
+
+        TextView textSum = new TextView(this);
+        textSum.setTextSize(12);
+        textSum.setTextColor(getResources().getColor(R.color.grey_light));
+        textSum.setText(R.string.sum);
+        noteBlock_2.addView(textSum, matchParent, wrapContent);
+
+        LinearLayout blockInBlock_4 = new LinearLayout(this);
+
+        ImageView imageOther = new ImageView(this);
+        imageOther.setBackgroundResource(R.drawable.ic_sum);
+        imageOther.setLayoutParams(new LinearLayout.LayoutParams(toPixels(45),toPixels(45), 0f));
+        blockInBlock_4.addView(imageOther);
+
+        inputSum = new EditText(this);
+        inputSum.setLayoutParams(new LinearLayout.LayoutParams(matchParent,wrapContent, 1f));
+        inputSum.setInputType(InputType.TYPE_CLASS_NUMBER);
+        inputSum.setGravity(Gravity.END);
+        inputSum.setHint(R.string.value_hint_sum);
+        blockInBlock_4.addView(inputSum);
+
+        noteBlock_2.addView(blockInBlock_4, matchParent, matchParent);
+        mainBlock.addView(noteBlock_2,matchParent,matchParent);
+
+        View line3 = new View(this);
+        line3.setBackgroundColor(getResources().getColor(R.color.black_light));
+        mainBlock.addView(line3,matchParent,toPixels(1));
+
+        //**Блок пятый (Валюта)
+        valueBlock = new LinearLayout(this);
+        valueBlock.setOrientation(LinearLayout.VERTICAL);
+        valueBlock.setPadding(toPixels(10),toPixels(10),toPixels(10),toPixels(10));
+
+
+        TextView textValue = new TextView(this);
+        textValue.setTextSize(12);
+        textValue.setTextColor(getResources().getColor(R.color.grey_light));
+        textValue.setText(R.string.value);
+        valueBlock.addView(textValue, matchParent, wrapContent);
+
+
+        LinearLayout blockInBlock_5 = new LinearLayout(this);
+
+        valueText = new TextView(this);
+        valueText.setTextSize(18);
+        valueText.setTypeface(Typeface.DEFAULT_BOLD);
+        valueText.setPadding(0, toPixels(5),0,0);
+        valueText.setText(R.string.value_rub);
+        valueText.setLayoutParams(new LinearLayout.LayoutParams(wrapContent,wrapContent, 1f));
+
+        blockInBlock_5.addView(valueText);
+
+        ImageView imageOpen_4 = new ImageView(this);
+        imageOpen_4.setBackgroundResource(R.drawable.ic_open);
+
+        blockInBlock_5.addView(imageOpen_4, wrapContent, matchParent);
+        valueBlock.addView(blockInBlock_5, matchParent, matchParent);
+        mainBlock.addView(valueBlock,matchParent,matchParent);
+
+        View line4 = new View(this);
+        line4.setBackgroundColor(getResources().getColor(R.color.black_light));
+        mainBlock.addView(line4,matchParent,toPixels(1));
+
+        //**Блок пятый (Комментарий)
+        LinearLayout noteBlock_3 = new LinearLayout(this);
+        noteBlock_3.setOrientation(LinearLayout.VERTICAL);
+        noteBlock_3.setPadding(toPixels(10),toPixels(10),toPixels(10),toPixels(10));
+
+
+        inputComment = new EditText(this);
+        inputComment.setLayoutParams(new LinearLayout.LayoutParams(matchParent,wrapContent, 1f));
+        inputComment.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        inputComment.setGravity(Gravity.END);
+        inputComment.setHint(R.string.value_hint_comment);
+        noteBlock_3.addView(inputComment);
+
+        mainBlock.addView(noteBlock_3,matchParent,matchParent);
+        mainLi.addView(mainBlock,mainBlockParams);
+        return mainLi;
+    }
+
+
+    public int toPixels(float input){
+        Resources r = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,input, r.getDisplayMetrics());
     }
 }
 

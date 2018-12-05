@@ -117,12 +117,16 @@
         <item>Российский рубль</item>
     </string-array>
 
-    <string-array name="category_name_array">
+    <string-array name="category_consumption_array">
         <item>Еда</item>
+        <item>Услуги</item>
         <item>Разное</item>
+    </string-array>
+
+    <string-array name="category_income_array">
         <item>Заплата</item>
         <item>Премия</item>
-
+        <item>Подарок</item>
     </string-array>
 
 </resources>
