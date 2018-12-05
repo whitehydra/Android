@@ -1,0 +1,126 @@
+<resources>
+    <string name="app_name">Main Project</string>
+    <string name="version_name">1.15.2</string>
+    <string name="content_main_name">Журнал расходов</string>
+    <string name="content_value_name">Валюты</string>
+    <string name="content_info_name">Инфо</string>
+    <string name="content_consumption_name">Расход</string>
+    <string name="content_incoming_name">Доход</string>
+    <string name="content_reserv_name">Резервная копия</string>
+    <string name="content_protect_name">Пароль</string>
+    <string name="content_value_list_name">Валюты</string>
+    <string name="content_category_list_name">Категории</string>
+
+    <string name="menu_item_1">Основная валюта</string>
+    <string name="menu_item_2">Резервная копия</string>
+    <string name="menu_item_3">Отчёт в excel</string>
+    <string name="menu_item_4">Защита паролем</string>
+    <string name="menu_item_5">Премиум доступ</string>
+    <string name="menu_item_6">Письмо автору</string>
+    <string name="menu_item_7">Инфо</string>
+
+
+    <string name="activity_main_category1">Расходы</string>
+    <string name="activity_main_category2">Доходы</string>
+    <string name="activity_main_category3">Баланс</string>
+
+    <string name="activity_main_interval_day">Сегодня</string>
+    <string name="activity_main_interval_week">Неделя</string>
+    <string name="activity_main_interval_month">Месяц</string>
+    <string name="activity_main_interval_all">Всё время</string>
+
+    <string name="day">День</string>
+    <string name="time">Время</string>
+    <string name="category">Категория</string>
+    <string name="sum">Сумма</string>
+    <string name="value">Валюта</string>
+
+    <string name="value_hint_sum">Введите сумму</string>
+    <string name="value_hint_comment">Комментарий</string>
+    <string name="value_hint_category">Новая категория</string>
+
+    <string name="reserv_full_text">Резервное копирование данных на Google Диск
+    позволяет восстановить все ваши записи, если вы потеряете или измените устройства.</string>
+
+    <string name="protection_full_text">Для управления конфиденциальностью своих данных,
+    используйте настройки ниже</string>
+
+    <string name="button_main1">Все расходы</string>
+    <string name="button_main2">Все доходы</string>
+
+
+    <string name="main_value">Основная валюта</string>
+
+    <string name="value_rub">RUB</string>
+
+    <string name="value_full_rub">Российский рубль</string>
+
+    <string name="category_different">Разное</string>
+    <string name="category_premium">Премия</string>
+
+
+    <string name="info_button1">Кнопка</string>
+    <string name="info_button2">Ещё кнопка</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+
+    <string name="main_layout_today">Сегодня</string>
+
+
+    <string-array name="value_name_array">
+        <item>AED</item>
+        <item>AFN</item>
+        <item>ALL</item>
+        <item>AMD</item>
+        <item>ANG</item>
+        <item>AOA</item>
+        <item>ARS</item>
+        <item>AUD</item>
+        <item>AWG</item>
+        <item>AZN</item>
+        <item>BBD</item>
+        <item>BDT</item>
+        <item>BGN</item>
+        <item>BHD</item>
+        <item>BIF</item>
+        <item>BMD</item>
+        <item>BND</item>
+        <item>BOB</item>
+        <item>RUB</item>
+    </string-array>
+
+
+    <string-array name="value_full_name_array">
+        <item>ОАЭ дирхам</item>
+        <item>Афгани</item>
+        <item>Албанский лек</item>
+        <item>Армянский драм</item>
+        <item>Нидерлансдский</item>
+        <item>Ангольская кванза</item>
+        <item>Аргенинский песо</item>
+        <item>Австраллийский доллар</item>
+        <item>Арубанская флорин</item>
+        <item>Азербайджанский манат</item>
+        <item>Барбадосский доллар</item>
+        <item>Бангладешская така</item>
+        <item>Болгарский лев</item>
+        <item>Бахрейнский динар</item>
+        <item>Бурундийский франк</item>
+        <item>Бермудский доллар</item>
+        <item>Брунейский доллар</item>
+        <item>Болливиано</item>
+        <item>Российский рубль</item>
+    </string-array>
+
+    <string-array name="category_name_array">
+        <item>Еда</item>
+        <item>Разное</item>
+        <item>Заплата</item>
+        <item>Премия</item>
+
+    </string-array>
+
+</resources>

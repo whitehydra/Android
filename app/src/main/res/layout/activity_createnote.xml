@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainLayout_background"
+    android:orientation="vertical"
+    tools:context=".CreateNoteActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar3"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/title_color" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/Main_blocks"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/date_button"
+                style="@style/CreateNote_blocks">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    style="@style/CreateNote_text_header_small"
+                    android:text="@string/day" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/date_text"
+                        style="@style/CreateNote_text_date"
+                        android:text="00 Янв 2018"/>
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        style="@style/CreateNote_buttons_open"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_button"
+                style="@style/CreateNote_blocks">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    style="@style/CreateNote_text_header_small"
+                    android:text="@string/time" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/time_text"
+                        style="@style/CreateNote_text_date"
+                        android:text="00:00" />
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        style="@style/CreateNote_buttons_open" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/BlocksLine_Long_Style" />
+
+        <LinearLayout
+            android:id="@+id/category_button"
+            style="@style/CreateNote_blocks"
+            android:onClick="openCategoryList">
+
+            <TextView
+                android:id="@+id/textView11"
+                style="@style/CreateNote_text_header_small"
+                android:text="@string/category" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/actualCategory"
+                    style="@style/CreateNote_text_category"
+                    android:text="@string/category_different" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    style="@style/CreateNote_buttons_open" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/BlocksLine_Long_Style" />
+
+        <LinearLayout
+            style="@style/CreateNote_blocks">
+
+            <TextView
+                android:id="@+id/textView13"
+                style="@style/CreateNote_text_header_small"
+                android:text="@string/sum" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    style="@style/CreateNote_image"
+                    app:srcCompat="@drawable/ic_sum" />
+
+                <EditText
+                    android:id="@+id/editText4"
+                    style="@style/CreateNote_editText.Sum"
+                    android:hint="@string/value_hint_sum"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/BlocksLine_Long_Style" />
+
+        <LinearLayout
+            android:id="@+id/value_button"
+            style="@style/CreateNote_blocks"
+            android:onClick="openValueList">
+
+            <TextView
+                android:id="@+id/textView14"
+                style="@style/CreateNote_text_header_small"
+                android:text="@string/value" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    style="@style/CreateNote_text_category"
+                    android:text="@string/value_rub" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    style="@style/CreateNote_buttons_open"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View style="@style/BlocksLine_Long_Style" />
+
+        <LinearLayout
+            style="@style/CreateNote_blocks">
+            <EditText
+                android:id="@+id/editText5"
+                style="@style/CreateNote_editText"
+                android:hint="@string/value_hint_comment" />
+        </LinearLayout>
+    </LinearLayout>
+</android.widget.LinearLayout>

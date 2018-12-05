@@ -1,0 +1,280 @@
+<resources>
+
+    <!--THEME-->
+    <style name="MainTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimaryDark">@color/colorDark</item>
+    </style>
+    <style name="MainTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorDark</item>
+    </style>
+
+
+    <!--TEXT-->
+    <style name="Main_text">
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Main_text.HeaderText">
+        <item name="android:textColor">@color/text_header1</item>
+    </style>
+    <style name="Main_text.ValueText">
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:textColor">@color/text_value</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="Main_text.CountText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:textColor">@color/text_count</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:gravity">end</item>
+    </style>
+    <style name="CreateNote_text_date">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="CreateNote_text_category">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="CreateNote_text_header_small">
+        <item name="android:textColor">@color/grey_light</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="CreateNote_editText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">textPersonName</item>
+    </style>
+    <style name="CreateNote_editText.Sum">
+        <item name="android:gravity">right</item>
+        <item name="android:inputType">number</item>
+    </style>
+    <style name="Category_editText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">textPersonName</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+    <style name="Info_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+    <style name="Protection_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+    </style>
+    <style name="Reserv_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Value_text_header">
+        <item name="android:textColor">@color/grey_double_light</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorLight</item>
+        <item name="android:paddingLeft">15dp</item>
+    </style>
+    <style name="Value_text_name">
+        <item name="android:textColor">@color/black_light</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+    <style name="Value_text_small">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Value_text_small_name">
+        <item name="android:textColor">@color/grey_ultra_light</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="Main_bottom_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="Category_text_list">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Value_text_list">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <!--BUTTONS-->
+    <style name="Main_buttons">
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+    </style>
+    <style name="Main_buttons_bottom">
+        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_height">90dp</item>
+    </style>
+    <style name="CreateNote_buttons_open">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:src">@drawable/ic_open</item>
+    </style>
+    <style name="Protection_buttons">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+    <style name="Reserv_buttons">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">15dp</item>
+    </style>
+    <style name="Category_buttons">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/ic_point</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+
+    <!--LINE-->
+    <style name="BlocksLine_Style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/blocks_line</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+    <style name="BlocksLine_Long_Style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/black_text</item>
+    </style>
+    <style name="BlocksLine_Wide_Style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:background">@color/black_text</item>
+    </style>
+
+
+    <!--BLOCKS-->
+    <style name="Value_blocks">
+        <item name="android:elevation">3dp</item>
+        <item name="android:background">@drawable/layout_blocks</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Value_blocks_little">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingStart">15dp</item>
+    </style>
+    <style name="Main_blocks">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/layout_blocks</item>
+        <item name="android:elevation">3dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="Main_bottom_block">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:layout_marginRight">60dp</item>
+        <item name="android:layout_marginTop">50dp</item>
+    </style>
+    <style name="CreateNote_blocks">
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="Reserv_blocks">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+    </style>
+    <style name="Category_bottom_block">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+
+
+    <!--IMAGE-->
+    <style name="CreateNote_image">
+        <item name="android:layout_width">68dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="Info_image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:src">@drawable/purse</item>
+    </style>
+
+</resources>

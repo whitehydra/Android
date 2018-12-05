@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ValueActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/title_color" />
+
+    <LinearLayout
+        style="@style/Reserv_blocks">
+
+        <TextView
+            android:id="@+id/textView8"
+            style="@style/Reserv_text"
+            android:text="@string/reserv_full_text" />
+
+        <Button
+            android:id="@+id/button3"
+            style="@style/Reserv_buttons"
+            android:text="Авторизация" />
+
+        <Button
+            android:id="@+id/button4"
+            style="@style/Reserv_buttons"
+            android:text="Создать резервную копию" />
+
+        <Button
+            android:id="@+id/button5"
+            style="@style/Reserv_buttons"
+            android:text="Восстановить резервную копию" />
+    </LinearLayout>
+</android.widget.LinearLayout>

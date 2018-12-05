@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.pc.mainproject">
+
+    <application
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/MainTheme.NoActionBar">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/content_main_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ValueActivity"
+            android:label="@string/content_value_name" />
+        <activity
+            android:name=".InfoActivity"
+            android:label="@string/content_info_name" />
+        <activity
+            android:name=".CreateNoteActivity"
+            android:label="@string/content_consumption_name" />
+        <activity
+            android:name=".ReservActivity"
+            android:label="@string/content_reserv_name" />
+        <activity
+            android:name=".ProtectionActivity"
+            android:label="@string/content_protect_name" />
+        <activity
+            android:name=".ValueListActivity"
+            android:label="@string/content_value_list_name" />
+        <activity
+            android:name=".CategoryListActivity"
+            android:label="@string/content_category_list_name"/>
+    </application>
+
+</manifest>
