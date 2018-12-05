@@ -49,8 +49,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         date.setText(datef.format(currentTime));
         time.setText(timef.format(currentTime));
 
-        View date_button = findViewById(R.id.date_button);
-        View time_button = findViewById(R.id.time_button);
 
         noteType = getIntent().getStringExtra("NoteType");
 
@@ -68,8 +66,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
 
 
-
-
+        View date_button = findViewById(R.id.date_button);
+        View time_button = findViewById(R.id.time_button);
 
         View.OnClickListener oclkBut = new View.OnClickListener() {
             @Override
@@ -118,6 +116,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
 
+
     public void openValueList(View view){
         Intent intent = new Intent(CreateNoteActivity.this, ValueListActivity.class);
         startActivity(intent);
@@ -163,3 +162,4 @@ public class CreateNoteActivity extends AppCompatActivity {
         return true;
     }
 }
+

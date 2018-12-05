@@ -36,7 +36,8 @@
             android:label="@string/content_value_list_name" />
         <activity
             android:name=".CategoryListActivity"
-            android:label="@string/content_category_list_name"/>
+            android:label="@string/content_category_list_name" />
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

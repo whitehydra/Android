@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
 
         Button add_button = (Button)findViewById(R.id.button_add1);
         Button add_button2 = (Button)findViewById(R.id.button_add2);
+        Button add_button3 = (Button)findViewById(R.id.button_add3);
 
         View.OnClickListener oclkBut = new View.OnClickListener() {
             @Override
@@ -50,13 +51,18 @@ public class MainActivity extends AppCompatActivity
                         intent = new Intent(MainActivity.this, CreateNoteActivity.class);
                         intent.putExtra("NoteType","Income");
                         startActivity(intent);
-
+                        break;
+                    case R.id.button_add3:
+                        intent = new Intent(MainActivity.this, TestActivity.class);
+                        startActivity(intent);
                         break;
                 }
             }
         };
         add_button.setOnClickListener(oclkBut);
         add_button2.setOnClickListener(oclkBut);
+        add_button3.setOnClickListener(oclkBut);
+
     }
 
     @Override

@@ -40,17 +40,18 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/date_text"
                         style="@style/CreateNote_text_date"
-                        android:text="00 Янв 2018"/>
+                        android:layout_width="wrap_content"
+                        android:text="00 Янв 2018" />
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        style="@style/CreateNote_buttons_open"/>
+                        style="@style/CreateNote_buttons_open" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -65,17 +66,24 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/time_text"
                         style="@style/CreateNote_text_date"
+                        android:layout_width="wrap_content"
                         android:text="00:00" />
+
+                    <Space
+                        android:layout_width="58dp"
+                        android:layout_height="match_parent" />
 
                     <ImageView
                         android:id="@+id/imageView4"
-                        style="@style/CreateNote_buttons_open" />
+                        style="@style/CreateNote_buttons_open"
+                        android:layout_width="50dp"
+                        android:layout_gravity="right" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
