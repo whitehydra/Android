@@ -1,5 +1,6 @@
 package com.example.pc.mainproject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,13 +10,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    String Tag = "Main: ";
+    ArrayList<Note> consumptionNotes = new ArrayList<Note>();
+    ArrayList<Note> incomeNotes = new ArrayList<Note>();
+    TextView consumptionDay,consumptionWeek,consumptionMonth,incomeMonth,allNotes;
+
+    int createNoteAnswer = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +54,12 @@ public class MainActivity extends AppCompatActivity
         Button add_button2 = (Button)findViewById(R.id.button_add2);
         Button add_button3 = (Button)findViewById(R.id.button_add3);
 
+        consumptionDay = (TextView)findViewById(R.id.text_count1);
+        consumptionWeek = (TextView)findViewById(R.id.text_count2);
+        consumptionMonth = (TextView)findViewById(R.id.text_count3);
+        incomeMonth = (TextView)findViewById(R.id.text_count4);
+        allNotes = (TextView)findViewById(R.id.text_count5);
+
         View.OnClickListener oclkBut = new View.OnClickListener() {
             @Override
             public void onClick(View v) { ;
@@ -45,12 +67,12 @@ public class MainActivity extends AppCompatActivity
                     case R.id.button_add1:
                         Intent intent = new Intent(MainActivity.this, CreateNoteActivity.class);
                         intent.putExtra("NoteType","Consumption");
-                        startActivity(intent);
+                        startActivityForResult(intent, createNoteAnswer);
                         break;
                     case R.id.button_add2:
                         intent = new Intent(MainActivity.this, CreateNoteActivity.class);
                         intent.putExtra("NoteType","Income");
-                        startActivity(intent);
+                        startActivityForResult(intent, createNoteAnswer);
                         break;
                     case R.id.button_add3:
                         intent = new Intent(MainActivity.this, TestActivity.class);
@@ -64,6 +86,77 @@ public class MainActivity extends AppCompatActivity
         add_button3.setOnClickListener(oclkBut);
 
     }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == createNoteAnswer){
+            if(resultCode == RESULT_OK){
+                Note note = (Note)data.getSerializableExtra("RESULT");
+                Log.d(Tag, " Object added! Value = " + Integer.toString(note.getValue()));
+                if (note.getType().equals("Consumption"))consumptionNotes.add(note);
+                if (note.getType().equals("Income"))incomeNotes.add(note);
+            }
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        printData();
+
+        Log.d(Tag,"Activity resume");
+    }
+
+
+    @SuppressLint("DefaultLocale")
+    private void printData(){
+        Calendar currentTime = Calendar.getInstance();
+        float consumptionOnDay=0,consumptionOnWeek=0,consumptionOnMonth=0, incomeValue=0, allValue=0;
+        if(!consumptionNotes.isEmpty())Log.d(Tag,"Objects founded");
+
+
+        for(Note element:consumptionNotes){
+            if (currentTime.get(Calendar.MONTH)== element.getTime().get(Calendar.MONTH))
+            {
+                consumptionOnMonth += element.getValue();
+                if (currentTime.get(Calendar.WEEK_OF_MONTH)== element.getTime().get(Calendar.WEEK_OF_MONTH)) {
+                    consumptionOnWeek += element.getValue();
+                    if (currentTime.get(Calendar.DAY_OF_WEEK)== element.getTime().get(Calendar.DAY_OF_WEEK))
+                        consumptionOnDay += element.getValue();
+                }
+
+            }
+            allValue -= element.getValue();
+
+        }
+
+        for (Note element: incomeNotes){
+            if (currentTime.get(Calendar.MONTH)== element.getTime().get(Calendar.MONTH)){
+                incomeValue += element.getValue();
+            }
+            allValue += element.getValue();
+        }
+        consumptionDay.setText(String.format("%6.2f", consumptionOnDay));
+        consumptionWeek.setText(String.format("%6.2f", consumptionOnWeek));
+        consumptionMonth.setText(String.format("%6.2f", consumptionOnMonth));
+        incomeMonth.setText(String.format("%6.2f", incomeValue));
+        allNotes.setText(String.format("%6.2f", allValue));
+    }
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onBackPressed() {

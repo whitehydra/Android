@@ -150,6 +150,11 @@ public class CreateNoteActivity extends AppCompatActivity {
                         Note note = new Note(categoryText.getText().toString(), valueText.getText().toString(),
                                 inputComment.getText().toString(), noteType, sum, selectedTime);
                         Log.d(Tag, note.getFullInfo());
+
+                        Intent answerIntent = new Intent();
+                        answerIntent.putExtra("RESULT",note);
+                        setResult(RESULT_OK,answerIntent);
+                        finish();
                 }
                 return false;
             }

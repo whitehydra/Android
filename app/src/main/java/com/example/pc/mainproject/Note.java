@@ -1,14 +1,20 @@
 package com.example.pc.mainproject;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Note {
+public class Note implements Serializable{
     private String category;
     private String currency;
     private String comment;
     private String type;
     private int value;
     private Calendar time;
+
+    Note(){
+        this("","","","",0,Calendar.getInstance());
+    }
+
 
     Note(String category, String currency, String comment, String type, int value, Calendar time){
         this.category = category;
@@ -24,6 +30,10 @@ public class Note {
             comment + "\ntype -> " + type + "; value -> " + value + "; time -> " + time.get(Calendar.YEAR) +
             "." + time.get(Calendar.MONTH) + "." + time.get(Calendar.DAY_OF_MONTH) + " " +
             time.get(Calendar.HOUR) + ":" + time.get(Calendar.MINUTE);
+    }
+
+    public Long getDifferenceInHours(Calendar currentTime){
+        return (currentTime.getTimeInMillis() - time.getTimeInMillis())/1000/60/60;
     }
 
 
