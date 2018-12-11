@@ -1,4 +1,4 @@
-package com.example.pc.mainproject;
+package com.example.pc.mainproject.lists;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.example.pc.mainproject.R;
 
 import java.util.Objects;
 

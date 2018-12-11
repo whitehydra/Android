@@ -1,4 +1,4 @@
-package com.example.pc.mainproject;
+package com.example.pc.mainproject.lists;
 
 import android.content.Context;
 import android.view.LayoutInflater;

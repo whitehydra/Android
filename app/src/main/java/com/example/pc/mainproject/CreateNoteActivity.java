@@ -24,6 +24,10 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.pc.mainproject.lists.CategoryListActivity;
+import com.example.pc.mainproject.lists.ValueListActivity;
+import com.example.pc.mainproject.objects.Note;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,7 +100,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                                 @Override
                                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                     dateText.setText(day + " " + monthName[month] + " " + year);
-                                   // LocalDate time = LocalDate.of(year,month,day);
                                     selectedTime.set(Calendar.YEAR, year);
                                     selectedTime.set(Calendar.MONTH, month);
                                     selectedTime.set(Calendar.DAY_OF_MONTH, day);

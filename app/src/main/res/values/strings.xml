@@ -10,6 +10,7 @@
     <string name="content_protect_name">Пароль</string>
     <string name="content_value_list_name">Валюты</string>
     <string name="content_category_list_name">Категории</string>
+    <string name="content_notes_list">Все записи</string>
 
     <string name="menu_item_1">Основная валюта</string>
     <string name="menu_item_2">Резервная копия</string>
@@ -48,8 +49,8 @@
     <string name="button_main1">Все расходы</string>
     <string name="button_main2">Все доходы</string>
 
-    <string name ="default_date">00 Янв 2018</string>
-    <string name ="default_time">00:00</string>
+    <string name="default_date">00 Янв 2018</string>
+    <string name="default_time">00:00</string>
 
     <string name="main_value">Основная валюта</string>
 

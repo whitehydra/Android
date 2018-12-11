@@ -16,19 +16,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.time.LocalDate;
+import com.example.pc.mainproject.objects.Note;
+import com.example.pc.mainproject.objects.NoteList;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
     String Tag = "Main: ";
-    ArrayList<Note> consumptionNotes = new ArrayList<Note>();
-    ArrayList<Note> incomeNotes = new ArrayList<Note>();
+    NoteList consumptionNotes = new NoteList();
+    NoteList incomeNotes = new NoteList();
     TextView consumptionDay,consumptionWeek,consumptionMonth,incomeMonth,allNotes;
 
     int createNoteAnswer = 0;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
+       // Log.d(Tag,"OnCreate");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity
         Button add_button = (Button)findViewById(R.id.button_add1);
         Button add_button2 = (Button)findViewById(R.id.button_add2);
         Button add_button3 = (Button)findViewById(R.id.button_add3);
+        Button buttonAllConsumption = (Button)findViewById(R.id.button_all_consumption);
+        Button buttonAllIncome = (Button)findViewById(R.id.button_all_income);
 
         consumptionDay = (TextView)findViewById(R.id.text_count1);
         consumptionWeek = (TextView)findViewById(R.id.text_count2);
@@ -78,17 +81,25 @@ public class MainActivity extends AppCompatActivity
                         intent = new Intent(MainActivity.this, TestActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.button_all_consumption:
+                        intent = new Intent(MainActivity.this, AllNotes.class);
+                        intent.putExtra("AllNotes",consumptionNotes);
+                        startActivity(intent);
+                        break;
+                    case R.id.button_all_income:
+                        intent = new Intent(MainActivity.this, AllNotes.class);
+                        intent.putExtra("AllNotes",incomeNotes);
+                        startActivity(intent);
+                        break;
                 }
             }
         };
         add_button.setOnClickListener(oclkBut);
         add_button2.setOnClickListener(oclkBut);
         add_button3.setOnClickListener(oclkBut);
-
+        buttonAllConsumption.setOnClickListener(oclkBut);
+        buttonAllIncome.setOnClickListener(oclkBut);
     }
-
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -108,7 +119,6 @@ public class MainActivity extends AppCompatActivity
     protected void onResume(){
         super.onResume();
         printData();
-
         Log.d(Tag,"Activity resume");
     }
 
@@ -119,27 +129,30 @@ public class MainActivity extends AppCompatActivity
         float consumptionOnDay=0,consumptionOnWeek=0,consumptionOnMonth=0, incomeValue=0, allValue=0;
         if(!consumptionNotes.isEmpty())Log.d(Tag,"Objects founded");
 
+        for(Note element:consumptionNotes.getList()){
+            if (currentTime.get(Calendar.YEAR)== element.getTime().get(Calendar.YEAR)){
+                if (currentTime.get(Calendar.MONTH)== element.getTime().get(Calendar.MONTH))
+                {
+                    consumptionOnMonth += element.getValue();
+                    if (currentTime.get(Calendar.WEEK_OF_MONTH)== element.getTime().get(Calendar.WEEK_OF_MONTH)) {
+                        consumptionOnWeek += element.getValue();
+                        if (currentTime.get(Calendar.DAY_OF_WEEK)== element.getTime().get(Calendar.DAY_OF_WEEK))
+                            consumptionOnDay += element.getValue();
+                    }
 
-        for(Note element:consumptionNotes){
-            if (currentTime.get(Calendar.MONTH)== element.getTime().get(Calendar.MONTH))
-            {
-                consumptionOnMonth += element.getValue();
-                if (currentTime.get(Calendar.WEEK_OF_MONTH)== element.getTime().get(Calendar.WEEK_OF_MONTH)) {
-                    consumptionOnWeek += element.getValue();
-                    if (currentTime.get(Calendar.DAY_OF_WEEK)== element.getTime().get(Calendar.DAY_OF_WEEK))
-                        consumptionOnDay += element.getValue();
                 }
-
             }
             allValue -= element.getValue();
 
         }
 
-        for (Note element: incomeNotes){
-            if (currentTime.get(Calendar.MONTH)== element.getTime().get(Calendar.MONTH)){
-                incomeValue += element.getValue();
+        for (Note element: incomeNotes.getList()){
+            if (currentTime.get(Calendar.YEAR) == element.getTime().get(Calendar.YEAR)){
+                if (currentTime.get(Calendar.MONTH)== element.getTime().get(Calendar.MONTH)){
+                    incomeValue += element.getValue();
+                }
+                allValue += element.getValue();
             }
-            allValue += element.getValue();
         }
         consumptionDay.setText(String.format("%6.2f", consumptionOnDay));
         consumptionWeek.setText(String.format("%6.2f", consumptionOnWeek));
@@ -147,14 +160,6 @@ public class MainActivity extends AppCompatActivity
         incomeMonth.setText(String.format("%6.2f", incomeValue));
         allNotes.setText(String.format("%6.2f", allValue));
     }
-
-
-
-
-
-
-
-
 
 
 

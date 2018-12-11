@@ -149,6 +149,7 @@
     </style>
 
 
+
     <!--BUTTONS-->
     <style name="Main_buttons">
         <item name="android:layout_width">35dp</item>

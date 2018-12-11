@@ -206,7 +206,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_main1"
+                android:id="@+id/button_all_consumption"
                 style="@style/Main_buttons_bottom"
                 android:background="@drawable/button_main1" />
 
@@ -223,7 +223,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_main2"
+                android:id="@+id/button_all_income"
                 style="@style/Main_buttons_bottom"
                 android:background="@drawable/button_main2" />
 

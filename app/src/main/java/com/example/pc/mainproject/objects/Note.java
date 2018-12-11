@@ -1,4 +1,4 @@
-package com.example.pc.mainproject;
+package com.example.pc.mainproject.objects;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -11,12 +11,12 @@ public class Note implements Serializable{
     private int value;
     private Calendar time;
 
-    Note(){
+    public Note(){
         this("","","","",0,Calendar.getInstance());
     }
 
 
-    Note(String category, String currency, String comment, String type, int value, Calendar time){
+    public Note(String category, String currency, String comment, String type, int value, Calendar time){
         this.category = category;
         this.currency = currency;
         this.comment = comment;
@@ -31,11 +31,6 @@ public class Note implements Serializable{
             "." + time.get(Calendar.MONTH) + "." + time.get(Calendar.DAY_OF_MONTH) + " " +
             time.get(Calendar.HOUR) + ":" + time.get(Calendar.MINUTE);
     }
-
-    public Long getDifferenceInHours(Calendar currentTime){
-        return (currentTime.getTimeInMillis() - time.getTimeInMillis())/1000/60/60;
-    }
-
 
     public String getCategory() {
         return category;

@@ -1,15 +1,12 @@
 package com.example.pc.mainproject;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
+import com.example.pc.mainproject.lists.ValueListActivity;
 
 import java.util.Objects;
 

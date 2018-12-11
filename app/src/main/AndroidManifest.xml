@@ -32,12 +32,15 @@
             android:name=".ProtectionActivity"
             android:label="@string/content_protect_name" />
         <activity
-            android:name=".ValueListActivity"
+            android:name=".lists.ValueListActivity"
             android:label="@string/content_value_list_name" />
         <activity
-            android:name=".CategoryListActivity"
+            android:name=".lists.CategoryListActivity"
             android:label="@string/content_category_list_name" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity
+            android:name=".AllNotes"
+            android:label="@string/content_notes_list" />
     </application>
 
 </manifest>
