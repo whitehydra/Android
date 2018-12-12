@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,10 +41,13 @@ public class CreateNoteActivity extends AppCompatActivity {
     int categoryAnswer = 0, valueAnswer = 1;
 
 
+    public DBhelper dBhelper;
+    private SQLiteDatabase db;
+
     Toolbar toolbar;
     LinearLayout dateBlock, timeBlock, categoryBlock, valueBlock;
-    EditText inputSum, inputComment;
-    TextView dateText, timeText, categoryText, valueText;
+    EditText inputValue, inputComment;
+    TextView dateText, timeText, categoryText, currencyText;
     String Tag = "CreateNote ";
 
     Calendar selectedTime = Calendar.getInstance();
@@ -56,6 +60,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         View content = drawContent();
         setContentView(content);
 
+        dBhelper = new DBhelper(this);
+        db = dBhelper.getWritableDatabase();
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -147,16 +153,16 @@ public class CreateNoteActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case (R.id.save):
                         Log.d(Tag, "Add note");
-                        int sum;
-                        if(inputSum.getText().toString().equals(""))sum=0;
-                        else sum = Integer.parseInt(inputSum.getText().toString());
-                        Note note = new Note(categoryText.getText().toString(), valueText.getText().toString(),
-                                inputComment.getText().toString(), noteType, sum, selectedTime);
+                        int value;
+                        if(inputValue.getText().toString().equals(""))value=0;
+                        else value = Integer.parseInt(inputValue.getText().toString());
+
+                        Note note = new Note(value, selectedTime,inputComment.getText().toString(), noteType,
+                                categoryText.getText().toString(), currencyText.getText().toString());
                         Log.d(Tag, note.getFullInfo());
 
-                        Intent answerIntent = new Intent();
-                        answerIntent.putExtra("RESULT",note);
-                        setResult(RESULT_OK,answerIntent);
+                        db.insert(DBhelper.TABLE_NOTE,null,note.getContentValues());
+
                         finish();
                 }
                 return false;
@@ -193,7 +199,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 int listNum = data.getIntExtra("RESULT",0);
                 String value = (getResources().getStringArray(R.array.value_name_array))[listNum];
                 Log.d(Tag, "returned - " + value);
-                valueText.setText(value);
+                currencyText.setText(value);
             }
         }
     }
@@ -204,6 +210,15 @@ public class CreateNoteActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    @Override
+    public void onDestroy(){
+        db.close();
+        super.onDestroy();
+    }
+
+
+
 
     private LinearLayout drawContent(){
         int matchParent = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -351,12 +366,12 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageOther.setLayoutParams(new LinearLayout.LayoutParams(toPixels(45),toPixels(45), 0f));
         blockInBlock_4.addView(imageOther);
 
-        inputSum = new EditText(this);
-        inputSum.setLayoutParams(new LinearLayout.LayoutParams(matchParent,wrapContent, 1f));
-        inputSum.setInputType(InputType.TYPE_CLASS_NUMBER);
-        inputSum.setGravity(Gravity.END);
-        inputSum.setHint(R.string.value_hint_sum);
-        blockInBlock_4.addView(inputSum);
+        inputValue = new EditText(this);
+        inputValue.setLayoutParams(new LinearLayout.LayoutParams(matchParent,wrapContent, 1f));
+        inputValue.setInputType(InputType.TYPE_CLASS_NUMBER);
+        inputValue.setGravity(Gravity.END);
+        inputValue.setHint(R.string.value_hint_sum);
+        blockInBlock_4.addView(inputValue);
 
         noteBlock_2.addView(blockInBlock_4, matchParent, matchParent);
         mainBlock.addView(noteBlock_2,matchParent,matchParent);
@@ -380,14 +395,14 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         LinearLayout blockInBlock_5 = new LinearLayout(this);
 
-        valueText = new TextView(this);
-        valueText.setTextSize(18);
-        valueText.setTypeface(Typeface.DEFAULT_BOLD);
-        valueText.setPadding(0, toPixels(5),0,0);
-        valueText.setText(R.string.value_rub);
-        valueText.setLayoutParams(new LinearLayout.LayoutParams(wrapContent,wrapContent, 1f));
+        currencyText = new TextView(this);
+        currencyText.setTextSize(18);
+        currencyText.setTypeface(Typeface.DEFAULT_BOLD);
+        currencyText.setPadding(0, toPixels(5),0,0);
+        currencyText.setText(R.string.value_rub);
+        currencyText.setLayoutParams(new LinearLayout.LayoutParams(wrapContent,wrapContent, 1f));
 
-        blockInBlock_5.addView(valueText);
+        blockInBlock_5.addView(currencyText);
 
         ImageView imageOpen_4 = new ImageView(this);
         imageOpen_4.setBackgroundResource(R.drawable.ic_open);

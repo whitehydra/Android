@@ -1,7 +1,10 @@
 package com.example.pc.mainproject;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,29 +17,39 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.pc.mainproject.objects.Note;
 import com.example.pc.mainproject.objects.NoteList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.SimpleTimeZone;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public DBhelper dBhelper;
+    private SQLiteDatabase db;
 
     String Tag = "Main: ";
     NoteList consumptionNotes = new NoteList();
     NoteList incomeNotes = new NoteList();
     TextView consumptionDay,consumptionWeek,consumptionMonth,incomeMonth,allNotes;
-
+    Cursor cursor;
     int createNoteAnswer = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
        // Log.d(Tag,"OnCreate");
+
+        dBhelper = new DBhelper(this);
+        db = dBhelper.getWritableDatabase();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,12 +83,12 @@ public class MainActivity extends AppCompatActivity
                     case R.id.button_add1:
                         Intent intent = new Intent(MainActivity.this, CreateNoteActivity.class);
                         intent.putExtra("NoteType","Consumption");
-                        startActivityForResult(intent, createNoteAnswer);
+                        startActivity(intent);
                         break;
                     case R.id.button_add2:
                         intent = new Intent(MainActivity.this, CreateNoteActivity.class);
                         intent.putExtra("NoteType","Income");
-                        startActivityForResult(intent, createNoteAnswer);
+                        startActivity(intent);
                         break;
                     case R.id.button_add3:
                         intent = new Intent(MainActivity.this, TestActivity.class);
@@ -99,25 +112,81 @@ public class MainActivity extends AppCompatActivity
         add_button3.setOnClickListener(oclkBut);
         buttonAllConsumption.setOnClickListener(oclkBut);
         buttonAllIncome.setOnClickListener(oclkBut);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == createNoteAnswer){
-            if(resultCode == RESULT_OK){
-                Note note = (Note)data.getSerializableExtra("RESULT");
-                Log.d(Tag, " Object added! Value = " + Integer.toString(note.getValue()));
-                if (note.getType().equals("Consumption"))consumptionNotes.add(note);
-                if (note.getType().equals("Income"))incomeNotes.add(note);
-            }
-        }
+
+      //  db.insert(DBhelper.TABLE_NOTE,null,cv);
+
+        //READ
+
+        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
+                new String[]{"Consumption"},null,null,null);
+        consumptionNotes.update(cursor);
+
+        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
+                new String[]{"Income"},null,null,null);
+        incomeNotes.update(cursor);
+
+
+        //delete
+
+     //   db.delete(DBhelper.TABLE_NOTE,null,null);
+     //   db.close();
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//        ContentValues cv = new ContentValues();
+//        SQLiteDatabase db = dBhelper.getWritableDatabase();
+//
+//        cv.put("name", "ZDAROVA");
+//        cv.put("email", "zdarova.com");
+//        long rowID = db.insert("mytable", null,cv);
+//        Log.d(Tag, "Строка вставленна, ид - " + rowID);
+//
+//        Log.d(Tag, "Строки таблицы: ");
+//        Cursor c = db.query("mytable",null,null,null,null,null,null);
+//        if(c.moveToFirst()) {
+//            int idColIndex = c.getColumnIndex("id");
+//            int nameColIndex = c.getColumnIndex("name");
+//            int emailColIndex = c.getColumnIndex("email");
+//
+//            do {
+//                Log.d(Tag, "ID = " + c.getInt(idColIndex) + ", name = " + c.getString(nameColIndex) +
+//                        ", email = " + c.getString(emailColIndex));
+//            } while (c.moveToNext());
+//        }
+//        else Log.d(Tag,"0 rows");
+//        c.close();
+//
+//        Log.d(Tag, "Очистка таблиц");
+//        int clearCount = db.delete("mytable", null, null);
+//        Log.d(Tag,"Удалено строк: " + clearCount);
+
+
+
     }
 
     @Override
     protected void onResume(){
         super.onResume();
+        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
+                new String[]{"Consumption"},null,null,null);
+        consumptionNotes.update(cursor);
+
+        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
+                new String[]{"Income"},null,null,null);
+        incomeNotes.update(cursor);
+
         printData();
         Log.d(Tag,"Activity resume");
     }
@@ -139,7 +208,6 @@ public class MainActivity extends AppCompatActivity
                         if (currentTime.get(Calendar.DAY_OF_WEEK)== element.getTime().get(Calendar.DAY_OF_WEEK))
                             consumptionOnDay += element.getValue();
                     }
-
                 }
             }
             allValue -= element.getValue();
@@ -211,4 +279,11 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onDestroy(){
+        db.close();
+        super.onDestroy();
+    }
+
 }
