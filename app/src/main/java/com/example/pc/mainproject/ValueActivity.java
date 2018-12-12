@@ -24,8 +24,8 @@ public class ValueActivity extends AppCompatActivity {
 
     protected void showData(){
         SharedPreferences sp = this.getSharedPreferences("com.example.pc.mainproject", MODE_PRIVATE);
-        String defaultName = sp.getString("Curse_name","");
-        String defaultFullName = sp.getString("Curse_full_name", "");
+        String defaultName = sp.getString("Curse_name","RUB");
+        String defaultFullName = sp.getString("Curse_full_name", "Российский рубль");
 
         textMain.setText(defaultFullName);
         textName.setText(defaultName);

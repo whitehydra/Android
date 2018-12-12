@@ -49,10 +49,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     LinearLayout dateBlock, timeBlock, categoryBlock, valueBlock;
     EditText inputValue, inputComment;
     TextView dateText, timeText, categoryText, currencyText;
-    String Tag = "CreateNote ";
+    String Tag = "CreateNote: ";
 
     Calendar selectedTime = Calendar.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +80,15 @@ public class CreateNoteActivity extends AppCompatActivity {
         noteType = getIntent().getStringExtra("NoteType");
 
         Log.d(Tag, "noteType - " + noteType);
-        if(noteType.equals("Consumption")){
+        if(noteType.equals("Расход")){
             getSupportActionBar().setTitle("Расход");
             categoryText.setText("Разное");
 
         }
-        if(noteType.equals("Income")){
+        if(noteType.equals("Доход")){
             getSupportActionBar().setTitle("Доход");
             categoryText.setText("Премия");
         }
-
 
         View.OnClickListener oclkBut = new View.OnClickListener() {
             @Override
@@ -164,8 +162,9 @@ public class CreateNoteActivity extends AppCompatActivity {
                         Log.d(Tag, note.getFullInfo());
 
                         int valueKey = Query.getValueIdByName(db, note.getCurrency());
-                        db.insert(DBhelper.TABLE_NOTE,null,note.getContentValues(valueKey));
-
+                        int categoryKey = Query.getCategoryIdByName(db, note.getCategory());
+                        long rowID = db.insert(DBhelper.TABLE_NOTE,null,note.getContentValues(valueKey, categoryKey));
+                        Log.d(Tag, "ЕСТЬ, ид - " + rowID);
                         finish();
                 }
                 return false;
@@ -188,11 +187,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (requestCode == categoryAnswer){
             if(resultCode == RESULT_OK){
                 int listNum = data.getIntExtra("RESULT",0);
-                String category = null;
-                if (noteType.equals("Consumption")) category = (getResources().
-                        getStringArray(R.array.category_consumption_array))[listNum];
-                if (noteType.equals("Income")) category = (getResources().
-                        getStringArray(R.array.category_income_array))[listNum];
+                String category = Query.getCategoryNameById(db,listNum);
+
                 Log.d(Tag, "returned - " + category);
                 categoryText.setText(category);
             }
@@ -207,7 +203,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -232,7 +227,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         LinearLayout mainLi = new LinearLayout(this);
         mainLi.setOrientation(LinearLayout.VERTICAL);
         mainLi.setBackgroundColor(getResources().getColor(R.color.mainLayout_background));
-       // mainLi.setLayoutParams(new LinearLayout.LayoutParams(wrapContent,wrapContent, 1f));
 
         //**Тулбар
         toolbar = new Toolbar(this);

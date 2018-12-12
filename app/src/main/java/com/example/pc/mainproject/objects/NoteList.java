@@ -38,7 +38,7 @@ public class NoteList implements Serializable {
         if(c.moveToFirst()) {
             int[] index = {c.getColumnIndex(DBhelper.NOTE_ID),c.getColumnIndex(DBhelper.NOTE_VALUE),
             c.getColumnIndex(DBhelper.NOTE_DATE),c.getColumnIndex(DBhelper.NOTE_COMMENT),c.getColumnIndex(DBhelper.NOTE_TYPE),
-            c.getColumnIndex(DBhelper.NOTE_CATEGORY), c.getColumnIndex(DBhelper.VALUE_NAME)};
+            c.getColumnIndex(DBhelper.CATEGORY_NAME), c.getColumnIndex(DBhelper.VALUE_NAME)};
             do {
                 Note note = new Note(c.getFloat(index[1]),c.getString(index[2]),c.getString(index[3]),
                         c.getString(index[4]),c.getString(index[5]),c.getString(index[6]));

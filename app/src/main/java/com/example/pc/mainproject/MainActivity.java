@@ -1,7 +1,6 @@
 package com.example.pc.mainproject;
 
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -34,22 +33,19 @@ public class MainActivity extends AppCompatActivity
     float defaultValue;
     String defaultName, defaultFullName;
 
-    String Tag = "Main: ";
+    String Tag = "MAIN: ";
     NoteList consumptionNotes = new NoteList();
     NoteList incomeNotes = new NoteList();
     TextView consumptionDay,consumptionWeek,consumptionMonth,incomeMonth,allNotes;
     Cursor cursor;
-    int createNoteAnswer = 0;
 
-    String table = "SELECT * FROM " + DBhelper.TABLE_NOTE + " INNER JOIN " + DBhelper.TABLE_VALUE + " ON " +
+    String table = "SELECT * FROM " + DBhelper.TABLE_NOTE + " INNER JOIN " + DBhelper.TABLE_VALUE + " ON (" +
             DBhelper.TABLE_NOTE + "." + DBhelper.NOTE_CURRENCY + " = " + DBhelper.TABLE_VALUE +
-            "." + DBhelper.VALUE_KEY + " WHERE " + DBhelper.NOTE_TYPE + " = ?";
+            "." + DBhelper.VALUE_KEY + ") JOIN " + DBhelper.TABLE_CATEGORY + " ON (" + DBhelper.TABLE_NOTE +
+            "." + DBhelper.NOTE_CATEGORY + " = " + DBhelper.TABLE_CATEGORY + "." + DBhelper.CATEGORY_KEY +
+            ") WHERE " + DBhelper.TABLE_NOTE + "." + DBhelper.NOTE_TYPE + " = ?";
 
-
-
-
-
-    protected void loadCurse(){
+    protected void loadActualCurse(){
         SharedPreferences sp = this.getSharedPreferences("com.example.pc.mainproject", MODE_PRIVATE);
         defaultValue = sp.getFloat("Curse", 1);
         defaultName = sp.getString("Curse_name","RUB");
@@ -67,19 +63,16 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
-       // Log.d(Tag,"OnCreate");
 
         dBhelper = new DBhelper(this);
         db = dBhelper.getWritableDatabase();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,12 +101,12 @@ public class MainActivity extends AppCompatActivity
                 switch (v.getId()) {
                     case R.id.button_add1:
                         Intent intent = new Intent(MainActivity.this, CreateNoteActivity.class);
-                        intent.putExtra("NoteType","Consumption");
+                        intent.putExtra("NoteType","Расход");
                         startActivity(intent);
                         break;
                     case R.id.button_add2:
                         intent = new Intent(MainActivity.this, CreateNoteActivity.class);
-                        intent.putExtra("NoteType","Income");
+                        intent.putExtra("NoteType","Доход");
                         startActivity(intent);
                         break;
                     case R.id.button_all_consumption:
@@ -134,139 +127,23 @@ public class MainActivity extends AppCompatActivity
         buttonAllConsumption.setOnClickListener(oclkBut);
         buttonAllIncome.setOnClickListener(oclkBut);
 
-
-
-      //  db.insert(DBhelper.TABLE_NOTE,null,cv);
-
-        //READ
-
-        //dBhelper.onUpgrade(db, DBhelper.DB_VERSION, DBhelper.DB_VERSION + 1);
-
-
-
-        cursor = db.rawQuery(table,new String[]{"Consumption"});
+        cursor = db.rawQuery(table,new String[]{"Расход"});
         consumptionNotes.update(cursor);
 
-
-        cursor = db.rawQuery(table,new String[]{"Income"});
+        cursor = db.rawQuery(table,new String[]{"Доход"});
         incomeNotes.update(cursor);
 
-
-
-
-        ContentValues cv = new ContentValues();
-        SQLiteDatabase db = dBhelper.getWritableDatabase();
-
-//
-//        cv.put(DBhelper.VALUE_NAME, "RUB");
-//        cv.put(DBhelper.VALUE_FULL_NAME, "Российский рубль");
-//        cv.put(DBhelper.VALUE_COURSE, 1f);
-//
-//
-//        long rowID = db.insert(DBhelper.TABLE_VALUE, null,cv);
-//        Log.d(Tag, "Строка вставленна, ид - " + rowID);
-//
-//
-//        cv.put(DBhelper.VALUE_NAME, "USD");
-//        cv.put(DBhelper.VALUE_FULL_NAME, "Доллар США");
-//        cv.put(DBhelper.VALUE_COURSE, 66.4f);
-//
-//
-//        rowID = db.insert(DBhelper.TABLE_VALUE, null,cv);
-//        Log.d(Tag, "Строка вставленна, ид - " + rowID);
-
-
-
-       // saveValue();
-        loadCurse();
-
-
-
-        Log.d(Tag, "Строки таблицы: ");
-        Cursor c = db.query(DBhelper.TABLE_VALUE,null,null,null,null,null,null);
-        if(c.moveToFirst()) {
-            int idColIndex = c.getColumnIndex(DBhelper.VALUE_KEY);
-            int nameColIndex = c.getColumnIndex(DBhelper.VALUE_NAME);
-            int emailColIndex = c.getColumnIndex(DBhelper.VALUE_FULL_NAME);
-            int course = c.getColumnIndex(DBhelper.VALUE_COURSE);
-
-            do {
-                Log.d(Tag, "ID = " + c.getInt(idColIndex) + ", name = " + c.getString(nameColIndex) +
-                        ", fullName = " + c.getString(emailColIndex) + ", " + c.getString(course));
-            } while (c.moveToNext());
-        }
-        else Log.d(Tag,"0 rows");
-        c.close();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //delete
-
-     //   db.delete(DBhelper.TABLE_NOTE,null,null);
-     //   db.close();
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//        ContentValues cv = new ContentValues();
-//        SQLiteDatabase db = dBhelper.getWritableDatabase();
-//
-//        cv.put("name", "ZDAROVA");
-//        cv.put("email", "zdarova.com");
-//        long rowID = db.insert("mytable", null,cv);
-//        Log.d(Tag, "Строка вставленна, ид - " + rowID);
-//
-//        Log.d(Tag, "Строки таблицы: ");
-//        Cursor c = db.query("mytable",null,null,null,null,null,null);
-//        if(c.moveToFirst()) {
-//            int idColIndex = c.getColumnIndex("id");
-//            int nameColIndex = c.getColumnIndex("name");
-//            int emailColIndex = c.getColumnIndex("email");
-//
-//            do {
-//                Log.d(Tag, "ID = " + c.getInt(idColIndex) + ", name = " + c.getString(nameColIndex) +
-//                        ", email = " + c.getString(emailColIndex));
-//            } while (c.moveToNext());
-//        }
-//        else Log.d(Tag,"0 rows");
-//        c.close();
-//
-//        Log.d(Tag, "Очистка таблиц");
-//        int clearCount = db.delete("mytable", null, null);
-//        Log.d(Tag,"Удалено строк: " + clearCount);
-
-
-
+        loadActualCurse();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        loadCurse();
-        cursor = db.rawQuery(table,new String[]{"Consumption"});
+        loadActualCurse();
+        cursor = db.rawQuery(table,new String[]{"Расход"});
         consumptionNotes.update(cursor);
 
-        cursor = db.rawQuery(table,new String[]{"Income"});
+        cursor = db.rawQuery(table,new String[]{"Доход"});
         incomeNotes.update(cursor);
 
         printData();
@@ -305,14 +182,12 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-
         consumptionDay.setText(String.format("%6.2f", consumptionOnDay/defaultValue));
         consumptionWeek.setText(String.format("%6.2f", consumptionOnWeek/defaultValue));
         consumptionMonth.setText(String.format("%6.2f", consumptionOnMonth/defaultValue));
         incomeMonth.setText(String.format("%6.2f", incomeValue/defaultValue));
         allNotes.setText(String.format("%6.2f", allValue/defaultValue));
     }
-
 
 
     @Override
@@ -324,8 +199,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

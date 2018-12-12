@@ -56,7 +56,7 @@ public class Note implements Serializable{
             time.get(Calendar.HOUR) + ":" + time.get(Calendar.MINUTE);
     }
 
-    public ContentValues getContentValues(int vKey){
+    public ContentValues getContentValues(int vKey, int cKey){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
         ContentValues cv = new ContentValues();
 
@@ -64,13 +64,12 @@ public class Note implements Serializable{
         cv.put(DBhelper.NOTE_COMMENT, comment);
         cv.put(DBhelper.NOTE_DATE, sdf.format(time.getTime()));
         cv.put(DBhelper.NOTE_TYPE, type);
-        cv.put(DBhelper.NOTE_CATEGORY, category);
+        cv.put(DBhelper.NOTE_CATEGORY, cKey);
         cv.put(DBhelper.NOTE_CURRENCY, vKey);
         return cv;
     }
 
     public void convertValue(float curse){
-        //Перевод в рубли
         value *= curse;
     }
 

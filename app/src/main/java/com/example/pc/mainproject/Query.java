@@ -26,7 +26,16 @@ public class Query {
         return output;
     }
 
+    static public String getCategoryNameById(SQLiteDatabase db, int id){
+        String output = "";
+        Cursor cs = db.query(DBhelper.TABLE_CATEGORY, null,
+                DBhelper.CATEGORY_KEY + " = ?",
+                new String[]{Integer.toString(id)},null,null,null);
 
+        if(cs.moveToFirst()) output = cs.getString(cs.getColumnIndex(DBhelper.CATEGORY_NAME));
+        cs.close();
+        return output;
+    }
 
     static public int getValueIdByName(SQLiteDatabase db, String name){
         int output = 0;
@@ -35,6 +44,17 @@ public class Query {
                 new String[]{name},null,null,null);
 
         if(cs.moveToFirst()) output = cs.getInt(cs.getColumnIndex(DBhelper.VALUE_KEY));
+        cs.close();
+        return output;
+    }
+
+    static public int getCategoryIdByName(SQLiteDatabase db, String name){
+        int output = 0;
+        Cursor cs = db.query(DBhelper.TABLE_CATEGORY, null,
+                DBhelper.CATEGORY_NAME + " = ?",
+                new String[]{name},null,null,null);
+
+        if(cs.moveToFirst()) output = cs.getInt(cs.getColumnIndex(DBhelper.CATEGORY_KEY));
         cs.close();
         return output;
     }
@@ -49,5 +69,4 @@ public class Query {
         cs.close();
         return output;
     }
-
 }

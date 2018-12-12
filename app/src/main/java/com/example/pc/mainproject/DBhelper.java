@@ -1,5 +1,6 @@
 package com.example.pc.mainproject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -31,6 +32,11 @@ public class DBhelper extends SQLiteOpenHelper {
     public static final String VALUE_FULL_NAME = "FULL_NAME";
     public static final String VALUE_COURSE = "COURSE";
 
+    public static final String TABLE_CATEGORY = "TABLE_CATEGORY";
+    public static final String CATEGORY_KEY = "CATEGORY_ID";
+    public static final String CATEGORY_NAME = "CATEGORY_NAME";
+    public static final String CATEGORY_TYPE = "CATEGORY_TYPE";
+
 
 
 
@@ -38,22 +44,26 @@ public class DBhelper extends SQLiteOpenHelper {
         super(context,DB_NAME,null,DB_VERSION);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL("create table "+ TABLE_NOTE +"("+ NOTE_ID +" integer primary key autoincrement, "+
-                NOTE_VALUE +" integer, "+ NOTE_DATE +" text," + NOTE_COMMENT + " text," + NOTE_TYPE + " text," + NOTE_CATEGORY +
-        " text," + NOTE_CURRENCY + " integer)");
+                NOTE_VALUE +" integer, "+ NOTE_DATE +" text," + NOTE_COMMENT + " text," + NOTE_TYPE + " text," +
+                NOTE_CATEGORY +" integer," + NOTE_CURRENCY + " integer)");
 
         db.execSQL("create table " + TABLE_VALUE + "(" + VALUE_KEY + " integer primary key autoincrement, " +
         VALUE_NAME + " text," + VALUE_FULL_NAME + " text," + VALUE_COURSE + " real)");
 
+        db.execSQL("create table " + TABLE_CATEGORY + "(" + CATEGORY_KEY + " integer primary key autoincrement, "+
+        CATEGORY_NAME + " text," + CATEGORY_TYPE + " text)");
+
+        addDefaultFields(db);
         Log.d(TAG,"База созданна");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("drop table if exists " + TABLE_NOTE);
         db.execSQL("drop table if exists " + TABLE_VALUE);
+        db.execSQL("drop table if exists " + TABLE_CATEGORY);
         onCreate(db);
 
         DB_VERSION = newVersion;
@@ -68,4 +78,48 @@ public class DBhelper extends SQLiteOpenHelper {
                 NOTE_VALUE +" integer, "+ NOTE_DATE +" text," + NOTE_COMMENT + " text," + NOTE_TYPE + " text," + NOTE_CATEGORY +
                 " text," + NOTE_CURRENCY + " integer)");
     }
+
+
+
+    public void addDefaultFields(SQLiteDatabase db){
+        ContentValues cv = new ContentValues();
+        cv.put(DBhelper.VALUE_NAME, "RUB");
+        cv.put(DBhelper.VALUE_FULL_NAME, "Российский рубль");
+        cv.put(DBhelper.VALUE_COURSE, 1f);
+        db.insert(DBhelper.TABLE_VALUE, null,cv);
+
+        cv.put(DBhelper.VALUE_NAME, "USD");
+        cv.put(DBhelper.VALUE_FULL_NAME, "Доллар США");
+        cv.put(DBhelper.VALUE_COURSE, 66.4f);
+        db.insert(DBhelper.TABLE_VALUE, null,cv);
+
+        //////////////
+
+        ContentValues cv2 = new ContentValues();
+
+        cv2.put(DBhelper.CATEGORY_NAME, "Разное");
+        cv2.put(DBhelper.CATEGORY_TYPE, "Расход");
+        db.insert(DBhelper.TABLE_CATEGORY, null,cv2);
+
+        cv2.put(DBhelper.CATEGORY_NAME, "Услуги");
+        cv2.put(DBhelper.CATEGORY_TYPE, "Расход");
+        db.insert(DBhelper.TABLE_CATEGORY, null,cv2);
+
+        cv2.put(DBhelper.CATEGORY_NAME, "Покупки");
+        cv2.put(DBhelper.CATEGORY_TYPE, "Расход");
+        db.insert(DBhelper.TABLE_CATEGORY, null,cv2);
+
+        cv2.put(DBhelper.CATEGORY_NAME, "Премия");
+        cv2.put(DBhelper.CATEGORY_TYPE, "Доход");
+        db.insert(DBhelper.TABLE_CATEGORY, null,cv2);
+
+        cv2.put(DBhelper.CATEGORY_NAME, "Подарок");
+        cv2.put(DBhelper.CATEGORY_TYPE, "Доход");
+        db.insert(DBhelper.TABLE_CATEGORY, null,cv2);
+
+        cv2.put(DBhelper.CATEGORY_NAME, "Зарплата");
+        cv2.put(DBhelper.CATEGORY_TYPE, "Доход");
+        db.insert(DBhelper.TABLE_CATEGORY, null,cv2);
+    }
+
 }
