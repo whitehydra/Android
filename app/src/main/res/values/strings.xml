@@ -13,7 +13,7 @@
     <string name="content_notes_list">Все записи</string>
 
     <string name="menu_item_1">Основная валюта</string>
-    <string name="menu_item_2">Резервная копия</string>
+    <string name="menu_item_2">Очистка</string>
     <string name="menu_item_3">Отчёт в excel</string>
     <string name="menu_item_4">Защита паролем</string>
     <string name="menu_item_5">Премиум доступ</string>
@@ -40,8 +40,7 @@
     <string name="value_hint_comment">Комментарий</string>
     <string name="value_hint_category">Новая категория</string>
 
-    <string name="reserv_full_text">Резервное копирование данных на Google Диск
-    позволяет восстановить все ваши записи, если вы потеряете или измените устройства.</string>
+    <string name="reserv_full_text">Очистка истории расходов и доходов.</string>
 
     <string name="protection_full_text">Для управления конфиденциальностью своих данных,
     используйте настройки ниже</string>

@@ -3,6 +3,7 @@ package com.example.pc.mainproject;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -17,17 +18,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.pc.mainproject.objects.Note;
 import com.example.pc.mainproject.objects.NoteList;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.SimpleTimeZone;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,12 +31,43 @@ public class MainActivity extends AppCompatActivity
     public DBhelper dBhelper;
     private SQLiteDatabase db;
 
+    float defaultValue;
+    String defaultName, defaultFullName;
+
     String Tag = "Main: ";
     NoteList consumptionNotes = new NoteList();
     NoteList incomeNotes = new NoteList();
     TextView consumptionDay,consumptionWeek,consumptionMonth,incomeMonth,allNotes;
     Cursor cursor;
     int createNoteAnswer = 0;
+
+    String table = "SELECT * FROM " + DBhelper.TABLE_NOTE + " INNER JOIN " + DBhelper.TABLE_VALUE + " ON " +
+            DBhelper.TABLE_NOTE + "." + DBhelper.NOTE_CURRENCY + " = " + DBhelper.TABLE_VALUE +
+            "." + DBhelper.VALUE_KEY + " WHERE " + DBhelper.NOTE_TYPE + " = ?";
+
+
+
+
+
+    protected void loadCurse(){
+        SharedPreferences sp = this.getSharedPreferences("com.example.pc.mainproject", MODE_PRIVATE);
+        defaultValue = sp.getFloat("Curse", 1);
+        defaultName = sp.getString("Curse_name","RUB");
+        defaultFullName = sp.getString("Curse_full_name", "Российский рубль");
+
+        Log.d("MAIN ","loaded " + defaultValue + " " + defaultName + " " + defaultFullName);
+
+        TextView t1 = (TextView)findViewById(R.id.text_value_name1);
+        TextView t2 = (TextView)findViewById(R.id.text_value_name2);
+        TextView t3 = (TextView)findViewById(R.id.text_value_name3);
+
+        t1.setText(defaultName);
+        t2.setText(defaultName);
+        t3.setText(defaultName);
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +93,6 @@ public class MainActivity extends AppCompatActivity
 
         Button add_button = (Button)findViewById(R.id.button_add1);
         Button add_button2 = (Button)findViewById(R.id.button_add2);
-        Button add_button3 = (Button)findViewById(R.id.button_add3);
         Button buttonAllConsumption = (Button)findViewById(R.id.button_all_consumption);
         Button buttonAllIncome = (Button)findViewById(R.id.button_all_income);
 
@@ -90,10 +116,6 @@ public class MainActivity extends AppCompatActivity
                         intent.putExtra("NoteType","Income");
                         startActivity(intent);
                         break;
-                    case R.id.button_add3:
-                        intent = new Intent(MainActivity.this, TestActivity.class);
-                        startActivity(intent);
-                        break;
                     case R.id.button_all_consumption:
                         intent = new Intent(MainActivity.this, AllNotes.class);
                         intent.putExtra("AllNotes",consumptionNotes);
@@ -109,7 +131,6 @@ public class MainActivity extends AppCompatActivity
         };
         add_button.setOnClickListener(oclkBut);
         add_button2.setOnClickListener(oclkBut);
-        add_button3.setOnClickListener(oclkBut);
         buttonAllConsumption.setOnClickListener(oclkBut);
         buttonAllIncome.setOnClickListener(oclkBut);
 
@@ -119,13 +140,75 @@ public class MainActivity extends AppCompatActivity
 
         //READ
 
-        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
-                new String[]{"Consumption"},null,null,null);
+        //dBhelper.onUpgrade(db, DBhelper.DB_VERSION, DBhelper.DB_VERSION + 1);
+
+
+
+        cursor = db.rawQuery(table,new String[]{"Consumption"});
         consumptionNotes.update(cursor);
 
-        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
-                new String[]{"Income"},null,null,null);
+
+        cursor = db.rawQuery(table,new String[]{"Income"});
         incomeNotes.update(cursor);
+
+
+
+
+        ContentValues cv = new ContentValues();
+        SQLiteDatabase db = dBhelper.getWritableDatabase();
+
+//
+//        cv.put(DBhelper.VALUE_NAME, "RUB");
+//        cv.put(DBhelper.VALUE_FULL_NAME, "Российский рубль");
+//        cv.put(DBhelper.VALUE_COURSE, 1f);
+//
+//
+//        long rowID = db.insert(DBhelper.TABLE_VALUE, null,cv);
+//        Log.d(Tag, "Строка вставленна, ид - " + rowID);
+//
+//
+//        cv.put(DBhelper.VALUE_NAME, "USD");
+//        cv.put(DBhelper.VALUE_FULL_NAME, "Доллар США");
+//        cv.put(DBhelper.VALUE_COURSE, 66.4f);
+//
+//
+//        rowID = db.insert(DBhelper.TABLE_VALUE, null,cv);
+//        Log.d(Tag, "Строка вставленна, ид - " + rowID);
+
+
+
+       // saveValue();
+        loadCurse();
+
+
+
+        Log.d(Tag, "Строки таблицы: ");
+        Cursor c = db.query(DBhelper.TABLE_VALUE,null,null,null,null,null,null);
+        if(c.moveToFirst()) {
+            int idColIndex = c.getColumnIndex(DBhelper.VALUE_KEY);
+            int nameColIndex = c.getColumnIndex(DBhelper.VALUE_NAME);
+            int emailColIndex = c.getColumnIndex(DBhelper.VALUE_FULL_NAME);
+            int course = c.getColumnIndex(DBhelper.VALUE_COURSE);
+
+            do {
+                Log.d(Tag, "ID = " + c.getInt(idColIndex) + ", name = " + c.getString(nameColIndex) +
+                        ", fullName = " + c.getString(emailColIndex) + ", " + c.getString(course));
+            } while (c.moveToNext());
+        }
+        else Log.d(Tag,"0 rows");
+        c.close();
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //delete
@@ -179,12 +262,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume(){
         super.onResume();
-        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
-                new String[]{"Consumption"},null,null,null);
+        loadCurse();
+        cursor = db.rawQuery(table,new String[]{"Consumption"});
         consumptionNotes.update(cursor);
 
-        cursor = db.query(DBhelper.TABLE_NOTE,null,DBhelper.TYPE + " = ?",
-                new String[]{"Income"},null,null,null);
+        cursor = db.rawQuery(table,new String[]{"Income"});
         incomeNotes.update(cursor);
 
         printData();
@@ -222,11 +304,13 @@ public class MainActivity extends AppCompatActivity
                 allValue += element.getValue();
             }
         }
-        consumptionDay.setText(String.format("%6.2f", consumptionOnDay));
-        consumptionWeek.setText(String.format("%6.2f", consumptionOnWeek));
-        consumptionMonth.setText(String.format("%6.2f", consumptionOnMonth));
-        incomeMonth.setText(String.format("%6.2f", incomeValue));
-        allNotes.setText(String.format("%6.2f", allValue));
+
+
+        consumptionDay.setText(String.format("%6.2f", consumptionOnDay/defaultValue));
+        consumptionWeek.setText(String.format("%6.2f", consumptionOnWeek/defaultValue));
+        consumptionMonth.setText(String.format("%6.2f", consumptionOnMonth/defaultValue));
+        incomeMonth.setText(String.format("%6.2f", incomeValue/defaultValue));
+        allNotes.setText(String.format("%6.2f", allValue/defaultValue));
     }
 
 
@@ -255,11 +339,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, ReservActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_protect) {
-            Intent intent = new Intent(MainActivity.this, ProtectionActivity.class);
-            startActivity(intent);
-
-        }else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_send) {
             String head = "Head";
             String body = "Body";
 

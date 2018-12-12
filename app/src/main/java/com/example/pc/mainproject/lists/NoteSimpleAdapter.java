@@ -16,12 +16,12 @@ public class NoteSimpleAdapter extends ArrayAdapter<String> {
     private final String[] noteType;
     private final String[] noteValueType;
     private final String[] noteComment;
-    private final int[] noteValue;
+    private final float[] noteValue;
 
 
 
     public NoteSimpleAdapter(Context context, String[] noteTime,String[] noteType,String[] noteValueType,
-                             String[] noteComment, int[] noteValue) {
+                             String[] noteComment, float[] noteValue) {
         super(context, R.layout.note_list_item, noteTime);
         this.context = context;
         this.noteTime = noteTime;

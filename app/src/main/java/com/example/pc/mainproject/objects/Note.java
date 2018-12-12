@@ -2,8 +2,6 @@ package com.example.pc.mainproject.objects;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.support.v4.os.ConfigurationCompat;
 
 import com.example.pc.mainproject.DBhelper;
 
@@ -11,14 +9,13 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class Note implements Serializable{
     private String category;
     private String currency;
     private String comment;
     private String type;
-    private int value;
+    private float value;
     private Calendar time;
 
     public Note(){
@@ -26,7 +23,7 @@ public class Note implements Serializable{
     }
 
 
-    public Note(int value, Calendar time, String comment,  String type, String category, String currency ){
+    public Note(float value, Calendar time, String comment,  String type, String category, String currency ){
         this.category = category;
         this.currency = currency;
         this.comment = comment;
@@ -35,7 +32,7 @@ public class Note implements Serializable{
         this.time = time;
     }
 
-    public Note(int value, String time, String comment,  String type, String category, String currency ){
+    public Note(float value, String time, String comment,  String type, String category, String currency ){
         Calendar cl = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
         try {
@@ -59,17 +56,22 @@ public class Note implements Serializable{
             time.get(Calendar.HOUR) + ":" + time.get(Calendar.MINUTE);
     }
 
-    public ContentValues getContentValues(){
+    public ContentValues getContentValues(int vKey){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
         ContentValues cv = new ContentValues();
 
-        cv.put(DBhelper.VALUE, value);
-        cv.put(DBhelper.COMMENT, comment);
-        cv.put(DBhelper.DATE, sdf.format(time.getTime()));
-        cv.put(DBhelper.TYPE, type);
-        cv.put(DBhelper.CATEGORY, category);
-        cv.put(DBhelper.CURRENCY, currency);
+        cv.put(DBhelper.NOTE_VALUE, value);
+        cv.put(DBhelper.NOTE_COMMENT, comment);
+        cv.put(DBhelper.NOTE_DATE, sdf.format(time.getTime()));
+        cv.put(DBhelper.NOTE_TYPE, type);
+        cv.put(DBhelper.NOTE_CATEGORY, category);
+        cv.put(DBhelper.NOTE_CURRENCY, vKey);
         return cv;
+    }
+
+    public void convertValue(float curse){
+        //Перевод в рубли
+        value *= curse;
     }
 
 
@@ -90,7 +92,7 @@ public class Note implements Serializable{
         return type;
     }
 
-    public int getValue() {
+    public float getValue() {
         return value;
     }
 

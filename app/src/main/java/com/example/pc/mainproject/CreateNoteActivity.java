@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -159,9 +160,11 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                         Note note = new Note(value, selectedTime,inputComment.getText().toString(), noteType,
                                 categoryText.getText().toString(), currencyText.getText().toString());
+                        note.convertValue(Query.getCurseByName(db,note.getCurrency()));
                         Log.d(Tag, note.getFullInfo());
 
-                        db.insert(DBhelper.TABLE_NOTE,null,note.getContentValues());
+                        int valueKey = Query.getValueIdByName(db, note.getCurrency());
+                        db.insert(DBhelper.TABLE_NOTE,null,note.getContentValues(valueKey));
 
                         finish();
                 }
@@ -197,8 +200,9 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (requestCode == valueAnswer){
             if(resultCode == RESULT_OK){
                 int listNum = data.getIntExtra("RESULT",0);
-                String value = (getResources().getStringArray(R.array.value_name_array))[listNum];
-                Log.d(Tag, "returned - " + value);
+
+                String value = Query.getValueNameById(db,listNum);
+                Log.d(Tag, "returned - " + value + " id = " + Query.getValueIdByName(db, value));
                 currencyText.setText(value);
             }
         }

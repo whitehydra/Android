@@ -190,10 +190,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button_add3"
-            style="@style/Main_buttons"
-            android:background="@drawable/button_add3" />
     </LinearLayout>
 
     <LinearLayout

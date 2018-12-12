@@ -1,6 +1,7 @@
 package com.example.pc.mainproject;
 
 import android.annotation.SuppressLint;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,13 +22,20 @@ public class AllNotes extends AppCompatActivity {
     ArrayList<String> noteValue = new ArrayList<>();
     ArrayList<String> noteType = new ArrayList<>();
     ArrayList<String> noteComment = new ArrayList<>();
-    int[] value;
+    public DBhelper dBhelper;
+    private SQLiteDatabase db;
+    float[] value;
     @SuppressLint("SimpleDateFormat") SimpleDateFormat timef = new SimpleDateFormat("dd MMM yyyy HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_notes);
+
+        dBhelper = new DBhelper(this);
+        db = dBhelper.getWritableDatabase();
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -37,13 +45,16 @@ public class AllNotes extends AppCompatActivity {
         NoteList allNotes  =  (NoteList)getIntent().getSerializableExtra("AllNotes");
         int size = allNotes.getSize();
 
-        value = new int[size];
+        value = new float[size];
 
         if (!allNotes.isEmpty()){
             int i = 0;
             for (Note element: allNotes.getList()){
 
-                value[i] = element.getValue();
+                //value[i] = element.getValue();
+
+                value[i] = element.getValue() / Query.getCurseByName(db,element.getCurrency());
+
                 noteValue.add(element.getCurrency());
                 noteType.add(element.getCategory());
                 noteComment.add(element.getComment());
@@ -60,6 +71,12 @@ public class AllNotes extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onDestroy(){
+        db.close();
+        super.onDestroy();
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

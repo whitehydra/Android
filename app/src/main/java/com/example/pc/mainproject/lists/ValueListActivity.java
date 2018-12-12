@@ -1,6 +1,8 @@
 package com.example.pc.mainproject.lists;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,17 +11,29 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.pc.mainproject.DBhelper;
 import com.example.pc.mainproject.R;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ValueListActivity extends AppCompatActivity {
+
+    public DBhelper dBhelper;
+    private SQLiteDatabase db;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_value_list);
+
+        dBhelper = new DBhelper(this);
+        db = dBhelper.getWritableDatabase();
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -29,11 +43,32 @@ public class ValueListActivity extends AppCompatActivity {
 
         ListView lvMain = (ListView) findViewById(R.id.value_list);
 
-        String[] value_name = getResources().getStringArray(R.array.value_name_array);
-        String[] value_full_name = getResources().getStringArray(R.array.value_full_name_array);
 
 
-        ValueSimpleAdapter adapter = new ValueSimpleAdapter(this, value_name, value_full_name);
+        final ArrayList<Integer> keyL = new ArrayList<>();
+        ArrayList<String> nameL = new ArrayList<>();
+        ArrayList<String> fullNameL = new ArrayList<>();
+
+
+
+        Cursor c = db.query(DBhelper.TABLE_VALUE,null,null,null,null,null,null);
+        if(c.moveToFirst()) {
+            int idIndex = c.getColumnIndex(DBhelper.VALUE_KEY);
+            int nameIndex = c.getColumnIndex(DBhelper.VALUE_NAME);
+            int fullNameIndex = c.getColumnIndex(DBhelper.VALUE_FULL_NAME);
+
+            do {
+                keyL.add(c.getInt(idIndex));
+                nameL.add(c.getString(nameIndex));
+                fullNameL.add(c.getString(fullNameIndex));
+            } while (c.moveToNext());
+        }
+        c.close();
+
+
+
+        ValueSimpleAdapter adapter = new ValueSimpleAdapter(this, nameL.toArray(new String[nameL.size()]),
+                fullNameL.toArray(new String[fullNameL.size()]));
         lvMain.setAdapter(adapter);
 
         Log.d("Value log:", "Created");
@@ -42,7 +77,7 @@ public class ValueListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("Value log:", "Click");
-                answerIntent.putExtra("RESULT",position);
+                answerIntent.putExtra("RESULT",keyL.get(position));
                 setResult(RESULT_OK,answerIntent);
                 finish();
             }
@@ -62,6 +97,13 @@ public class ValueListActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+
+    @Override
+    public void onDestroy(){
+        db.close();
+        super.onDestroy();
     }
 
 }

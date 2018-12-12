@@ -1,23 +1,15 @@
 package com.example.pc.mainproject;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.util.Log;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class DBhelper extends SQLiteOpenHelper {
     private static String TAG = "DATA_BASE: ";
     private static String DB_NAME = "main.db";
     private static String DB_PATH = "";
-    private static int DB_VERSION = 1;
+    public static int DB_VERSION = 1;
 
     private Context context;
     private boolean update = false;
@@ -25,13 +17,19 @@ public class DBhelper extends SQLiteOpenHelper {
 
 
     public static final String TABLE_NOTE = "NOTE";
-    public static final String KEY_ID = "ID";
-    public static final String VALUE = "VALUE";
-    public static final String DATE = "DATE";
-    public static final String COMMENT = "COMMENT";
-    public static final String TYPE = "TYPE";
-    public static final String CATEGORY = "CATEGORY";
-    public static final String CURRENCY = "CURRENCY";
+    public static final String NOTE_ID = "ID";
+    public static final String NOTE_VALUE = "VALUE";
+    public static final String NOTE_DATE = "DATE";
+    public static final String NOTE_COMMENT = "COMMENT";
+    public static final String NOTE_TYPE = "TYPE";
+    public static final String NOTE_CATEGORY = "CATEGORY";
+    public static final String NOTE_CURRENCY = "CURRENCY";
+
+    public static final String TABLE_VALUE = "TABLE_VALUE";
+    public static final String VALUE_KEY = "ID";
+    public static final String VALUE_NAME = "NAME";
+    public static final String VALUE_FULL_NAME = "FULL_NAME";
+    public static final String VALUE_COURSE = "COURSE";
 
 
 
@@ -43,17 +41,31 @@ public class DBhelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("create table "+ TABLE_NOTE +"("+ KEY_ID +" integer primary key autoincrement, "+
-                VALUE +" integer, "+ DATE +" text," + COMMENT + " text," + TYPE + " text," + CATEGORY +
-        " text," + CURRENCY + " text)");
+        db.execSQL("create table "+ TABLE_NOTE +"("+ NOTE_ID +" integer primary key autoincrement, "+
+                NOTE_VALUE +" integer, "+ NOTE_DATE +" text," + NOTE_COMMENT + " text," + NOTE_TYPE + " text," + NOTE_CATEGORY +
+        " text," + NOTE_CURRENCY + " integer)");
+
+        db.execSQL("create table " + TABLE_VALUE + "(" + VALUE_KEY + " integer primary key autoincrement, " +
+        VALUE_NAME + " text," + VALUE_FULL_NAME + " text," + VALUE_COURSE + " real)");
+
         Log.d(TAG,"База созданна");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("drop table if exists " + TABLE_NOTE);
+        db.execSQL("drop table if exists " + TABLE_VALUE);
         onCreate(db);
 
+        DB_VERSION = newVersion;
         Log.d(TAG, "База обновлена");
-       // if(newVersion > oldVersion)update = true;
+    }
+
+
+    public void upgradeNote(SQLiteDatabase db){
+        db.execSQL("drop table if exists " + TABLE_NOTE);
+
+        db.execSQL("create table "+ TABLE_NOTE +"("+ NOTE_ID +" integer primary key autoincrement, "+
+                NOTE_VALUE +" integer, "+ NOTE_DATE +" text," + NOTE_COMMENT + " text," + NOTE_TYPE + " text," + NOTE_CATEGORY +
+                " text," + NOTE_CURRENCY + " integer)");
     }
 }

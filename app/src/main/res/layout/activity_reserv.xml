@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ValueActivity">
+    tools:context=".ReservActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -22,18 +22,10 @@
             android:text="@string/reserv_full_text" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonClean"
             style="@style/Reserv_buttons"
-            android:text="Авторизация" />
+            android:onClick="cleanStory"
+            android:text="Очистка истории" />
 
-        <Button
-            android:id="@+id/button4"
-            style="@style/Reserv_buttons"
-            android:text="Создать резервную копию" />
-
-        <Button
-            android:id="@+id/button5"
-            style="@style/Reserv_buttons"
-            android:text="Восстановить резервную копию" />
     </LinearLayout>
 </android.widget.LinearLayout>
